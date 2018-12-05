@@ -3,7 +3,8 @@ import StepRenderer from './StepRenderer';
 
 class Wizard extends React.Component {
     state = {
-        currentStep: 0
+        currentStep: 0,
+        stepsStatus: this.props.steps.map(step => ({status: 'pending'}))
     }
 
     handleNextStepBtn = () => {
