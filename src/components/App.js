@@ -6,9 +6,9 @@ import DoOneMoreThing from './DoOneMoreThing';
 import './App.css';
 
 const steps = [
-  {name: 'Do something', component: DoSomething},
-  {name: 'Do something else', component: DoSomethingElse},
-  {name: 'Do whatever', component: DoOneMoreThing},
+  {name: 'Do something', component: <DoSomething />},
+  {name: 'Do something else', component: <DoSomethingElse />},
+  {name: 'Do whatever', component: <DoOneMoreThing />},
 ]
 
 class App extends Component {

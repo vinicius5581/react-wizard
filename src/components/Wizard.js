@@ -1,15 +1,34 @@
 import React from 'react';
+import StepRenderer from './StepRenderer';
 
 class Wizard extends React.Component {
+    state = {
+        currentStep: 0
+    }
+
+    handleNextStepBtn = () => {
+        if (this.state.currentStep < this.props.steps.length) {
+            this.setState(prevState => ({currentStep: prevState.currentStep + 1}))
+        }        
+    }
+
+    handlePrevStepBtn = () => {
+        if (this.state.currentStep > 0) {
+            this.setState(prevState => ({currentStep: prevState.currentStep - 1}))
+        } 
+    }
+
     render() {
         return (
             <React.Fragment>
                 <header>
-                    Previous Step - Steps - Next Step
+                    <button onClick={this.handlePrevStepBtn}>Previous Step</button>
+                    {this.state.currentStep}
+                    <button onClick={this.handleNextStepBtn}>Next Step</button>
                 </header>
-                <main>
-                    Current step content
-                </main>
+                <StepRenderer>
+                    {this.props.steps[this.state.currentStep].component}
+                </StepRenderer>
             </React.Fragment>
         )
     }
