@@ -1,36 +1,77 @@
 import React from 'react';
+import StepsNav from './StepsNav';
 import StepRenderer from './StepRenderer';
+import Alert from './Alert';
+import './Wizard.css';
 
 class Wizard extends React.Component {
     state = {
-        currentStep: 0,
-        stepsStatus: this.props.steps.map(step => ({status: 'pending'}))
+        currentStepIdx: 0,
+        steps: this.props.steps.map(step => ({...step, status: 'pending'})),
+        error: null
     }
 
-    handleNextStepBtn = () => {
-        if (this.state.currentStep < this.props.steps.length - 1) {
-            this.setState(prevState => ({currentStep: prevState.currentStep + 1}))
-        }        
+    goToStep = stepNumber => {
+        const {steps} = this.state;
+        if (
+                stepNumber >= 0 && 
+                stepNumber < steps.length  && 
+                (steps[stepNumber].status !== 'pending' || (
+                    stepNumber > 0 && 
+                    steps[stepNumber - 1].status !== 'pending'
+                ))
+            ) {
+            this.setState({currentStepIdx: stepNumber})
+        } else {
+            this.setState({error: 'You need to complete a step prior to jump to next one'})
+        }
+    }
+
+    handleNextStepBtn = () => { 
+        this.goToStep(this.state.currentStepIdx + 1)
     }
 
     handlePrevStepBtn = () => {
-        if (this.state.currentStep > 0) {
-            this.setState(prevState => ({currentStep: prevState.currentStep - 1}))
-        } 
+        this.goToStep(this.state.currentStepIdx - 1)
+    }    
+
+    markAsComplete = stepNumber => {
+        this.setState(prevState => ({steps: prevState.steps.map((step,idx) => {
+            if (stepNumber === idx) {
+                return {...step, status: 'complete'}
+            }
+            return step
+        }),
+        error: null
+    }))
+    }
+
+    clearError = () => {
+        this.setState({error: null})
     }
 
     render() {
+        const {steps, currentStepIdx, error} = this.state;
         return (
-            <React.Fragment>
+            <div className='wizard'>
                 <header>
-                    <button onClick={this.handlePrevStepBtn}>Previous Step</button>
-                    {this.state.currentStep}
-                    <button onClick={this.handleNextStepBtn}>Next Step</button>
+                    <StepsNav 
+                        steps={steps}
+                        handlePrevStepBtn={this.handlePrevStepBtn}
+                        handleNextStepBtn={this.handleNextStepBtn}
+                        goToStep={this.goToStep}
+                        currentStepIdx={currentStepIdx}
+                    />
                 </header>
                 <StepRenderer>
-                    {this.props.steps[this.state.currentStep].component}
+                    {React.cloneElement(this.props.steps[currentStepIdx].component, {
+                        markAsComplete: this.markAsComplete,
+                        currentStep: steps[currentStepIdx],
+                        currentIdx: currentStepIdx
+                    })}
                 </StepRenderer>
-            </React.Fragment>
+                {error && (<Alert msg={error} clear={this.clearError} />)}
+            </div>
         )
     }
 }
