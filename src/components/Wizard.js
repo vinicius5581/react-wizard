@@ -7,7 +7,7 @@ import './Wizard.css';
 class Wizard extends React.Component {
     state = {
         currentStepIdx: 0,
-        steps: this.props.steps.map(step => ({...step, status: 'pending'})),
+        steps: this.props.steps.map(step => ({status: 'pending', ...step})),
         error: null
     }
 

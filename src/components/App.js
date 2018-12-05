@@ -8,7 +8,8 @@ import './App.css';
 const steps = [
   {id: 1, name: 'Do something', component: <DoSomething />},
   {id: 2, name: 'Do something else', component: <DoSomethingElse />},
-  {id: 3, name: 'Do whatever', component: <DoOneMoreThing />},
+  {id: 3, name: 'Do whatever', component: <DoOneMoreThing />, status: 'complete'},
+  {id: 4, name: 'Do whatever', component: <DoOneMoreThing />},
 ]
 
 class App extends Component {
