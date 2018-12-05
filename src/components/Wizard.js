@@ -23,7 +23,7 @@ class Wizard extends React.Component {
             ) {
             this.setState({currentStepIdx: stepNumber})
         } else {
-            this.setState({error: 'You need to complete a step prior to jump to next one'})
+            this.setState({error: 'You need to complete this step prior to jump to next one'})
         }
     }
 
