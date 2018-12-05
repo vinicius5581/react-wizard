@@ -7,7 +7,7 @@ class Wizard extends React.Component {
     }
 
     handleNextStepBtn = () => {
-        if (this.state.currentStep < this.props.steps.length) {
+        if (this.state.currentStep < this.props.steps.length - 1) {
             this.setState(prevState => ({currentStep: prevState.currentStep + 1}))
         }        
     }
